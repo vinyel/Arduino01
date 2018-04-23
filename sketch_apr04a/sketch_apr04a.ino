@@ -1,7 +1,8 @@
 #include <Servo.h>
+#include "Inverse_Kinematics.h"
 //http://denshi.blog.jp/arduino/serial_servo_motor
-Servo myservo1;   //0～90  上腕
-Servo myservo2;   //0～90 前腕
+Servo myservo1;   //0～90  前腕
+Servo myservo2;   //0～90 上腕
 Servo myservo3;   //0～180  土台の回転角度
 
 // グローバル変数の宣言
@@ -16,7 +17,7 @@ int deg = 90;    // サーボの角度
 bool isServo = false;
 int ss = 1;
 
-Inverse_Kinematics ik;  //インスタンス生成
+Inverse_Kinematics ik;  //IKを計算して角度を出すインスタンス生成
 
 void setup() {
   myservo1.attach(9);
@@ -30,6 +31,7 @@ void setup() {
   myservo3.write(90);
 }
 
+/*
 void selectServo() {
   if ( inputServo == '1' || inputServo == '2' || inputServo == '3' ) {
     Serial.println("Accepted:");
@@ -41,9 +43,24 @@ void selectServo() {
     isServo = false;
   }
 }
+*/
 
 void loop() {
+  ik.Set_Coordinate(10, 10, 5);
+  ik.Set_DistanceOfCoordinate();
+  ik.Calculate();
   
+  myservo1.write(90);  //前腕j3
+  myservo2.write(90);  //上腕j1
+  myservo3.write(90);  //土台j2
+    Serial.println(ik.j3);
+  /*
+  myservo1.write(ik.Get_AngleJ1);  //上腕
+  myservo2.write(ik.Get_AngleJ3);  //前腕
+  myservo3.write(ik.Get_AngleJ2);  //土台
+  */
+  
+  /*
   if ( Serial.available() && !isServo ) {
     inputServo = Serial.read();
     selectServo();
@@ -76,6 +93,7 @@ void loop() {
         break;
     }
   }
+  */
 }
 
 int ctoi(const char c){
