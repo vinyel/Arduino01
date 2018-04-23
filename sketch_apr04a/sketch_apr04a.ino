@@ -16,6 +16,8 @@ int deg = 90;    // サーボの角度
 bool isServo = false;
 int ss = 1;
 
+Inverse_Kinematics ik;  //インスタンス生成
+
 void setup() {
   myservo1.attach(9);
   myservo2.attach(10);
@@ -59,20 +61,20 @@ void loop() {
       isServo = false;
     }
     else { i++; }
-      deg = val;
-  switch(ss) {
-    case 1:
-      myservo1.write(deg);
-      break;
-    case 2:
-      myservo2.write(deg);
-      break;
-    case 3:
-      myservo3.write(deg);
-      break;
-    default:
-      break;
-  }
+    deg = val;
+    switch(ss) {
+      case 1:
+        myservo1.write(deg);
+        break;
+      case 2:
+        myservo2.write(deg);
+        break;
+      case 3:
+        myservo3.write(deg);
+        break;
+      default:
+        break;
+    }
   }
 }
 
