@@ -2,7 +2,7 @@ class Inverse_Kinematics {
   public:
     float nx, ny, nz;
     float j1, j2, j3;
-
+    float an1, an2, an3;
    
     float LFB;  //土台からの距離
     float LOA; //Length of Arm
@@ -18,6 +18,7 @@ class Inverse_Kinematics {
     float Get_Cos(float x);
     float Get_ArcSin(float x);
     float Get_ArcCos(float x);
+    float Get_ArcTan(float x);
     float Get_Pow(float x);
 };
 

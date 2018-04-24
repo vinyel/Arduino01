@@ -14,9 +14,9 @@ Inverse_Kinematics::Inverse_Kinematics() {
 
 //現在指定している座標を設定※今は仮に値を置いてる角度も同様
 void Inverse_Kinematics::Set_Coordinate(float x, float y, float z) {
-  nx = 10;
-  ny = 10;
-  nz = 11;
+  nx = x;
+  ny = y;
+  nz = z;
 }
 
 //現在指定している角度を設定
@@ -55,10 +55,22 @@ void Inverse_Kinematics::Calculate() {
   float cosJ1, sinJ1;
   
   //まず角度j3を求める
-  j3 = 2 * Get_ArcSin(LFB/(2 * LOA));
+  j3 = 2 * Get_ArcCos(LFB/(2 * LOA));
+  an3 = 180 * (j3 / M_PI);
   //次に角度j2
-  j2 = Get_ArcSin(nx/(LOA + LOA * Get_Cos(j3)));
+  j2 = Get_ArcTan(nx/nz);
+  //j2 = Get_ArcSin(nx/(LOA + LOA * Get_Cos(j3)));
+  an2 = 180 * (j2 / M_PI);
   //次に角度j1
+
+  float nxz = sqrt(Get_Pow(nx) + Get_Pow(nz));
+  float n1 = Get_ArcTan(ny / nxz);
+  float n2 = j3 / 2;
+
+  j1 = n1 + n2;
+
+  an1 = 180 * (j1 / M_PI);
+  /*
   y0 = LOA * Get_Sin(j3);
   z0 = (LOA + LOA * Get_Cos(j3)) * Get_Cos(j2);
 
@@ -66,10 +78,12 @@ void Inverse_Kinematics::Calculate() {
   sinJ1 = ( y0 * nz / z0 - ny ) / ( Get_Pow(y0) / z0 + z0 );
   if ( sinJ1 > 0 ) {
     j1 = Get_ArcCos(cosJ1);
+    an1 = 180 * (j1 / M_PI);
   } else {
     j1 = -(Get_ArcCos(cosJ1));
+    an1 = 180 * (j1 / M_PI);
   }
-  
+  */
 }
 
 //--以下、数学
@@ -91,6 +105,10 @@ float Inverse_Kinematics::Get_ArcSin(float x) {
 //逆余弦を返す
 float Inverse_Kinematics::Get_ArcCos(float x) {
   return acos(x);
+}
+
+float Inverse_Kinematics::Get_ArcTan(float x) {
+  return atan(x);
 }
 
 //二乗を返す

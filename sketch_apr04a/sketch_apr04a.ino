@@ -20,6 +20,7 @@ int ss = 1;
 Inverse_Kinematics ik;  //IKを計算して角度を出すインスタンス生成
 
 void setup() {
+  
   myservo1.attach(9);
   myservo2.attach(10);
   myservo3.attach(11);
@@ -29,6 +30,7 @@ void setup() {
   myservo1.write(90);
   myservo2.write(90);
   myservo3.write(90);
+  
 }
 
 /*
@@ -46,14 +48,14 @@ void selectServo() {
 */
 
 void loop() {
-  ik.Set_Coordinate(10, 10, 5);
+  ik.Set_Coordinate(16, 3, 16);
   ik.Set_DistanceOfCoordinate();
   ik.Calculate();
   
-  myservo1.write(90);  //前腕j3
-  myservo2.write(90);  //上腕j1
-  myservo3.write(90);  //土台j2
-    Serial.println(ik.j3);
+  myservo1.write(ik.an3);  //前腕j3
+  myservo2.write(ik.an1);  //上腕j1
+  myservo3.write(ik.an2+45);  //土台j2
+    Serial.println(ik.an2);
   /*
   myservo1.write(ik.Get_AngleJ1);  //上腕
   myservo2.write(ik.Get_AngleJ3);  //前腕
